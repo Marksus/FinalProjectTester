@@ -135,7 +135,6 @@ public class DataManipulator {
 			ResultMapper resultMapper = session.getMapper(ResultMapper.class);
 			UserMapper userMapper = session.getMapper(UserMapper.class);
 			int userId = userMapper.getUser(name).getId();
-			System.out.println(userId);
 			Result temp = new Result();
 			temp.setUserId(userId);
 			temp.setTestId(testId);
