@@ -1,0 +1,3 @@
+# Module tester
+# RPC service class, partial path of RPC policy file
+com.epam.tester.client.TestingService, A1EF4E7E841C8B6400146C7F2F1B5B36.gwt.rpc

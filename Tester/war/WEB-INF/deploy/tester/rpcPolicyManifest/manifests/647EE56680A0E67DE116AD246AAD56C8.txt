@@ -1,0 +1,2 @@
+serviceClass: com.epam.tester.client.TestingService
+path: A1EF4E7E841C8B6400146C7F2F1B5B36.gwt.rpc
