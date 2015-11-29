@@ -81,12 +81,12 @@ public class Tester implements EntryPoint {
 		passwordBox.setWidth("15em");
 
 		loginForm = new FlexTable();
-		loginForm.setText(0, 0, "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ:");
+		loginForm.setText(0, 0, "Введите логин:");
 		loginForm.setWidget(0, 1, loginBox);
-		loginForm.setText(1, 0, "Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ:");
+		loginForm.setText(1, 0, "Введите пароль:");
 		loginForm.setWidget(1, 1, passwordBox);
 
-		signIn = new Button("Р’РѕР№С‚Рё");
+		signIn = new Button("Войти");
 		signIn.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -96,7 +96,7 @@ public class Tester implements EntryPoint {
 
 		});
 
-		registration = new Button("Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ");
+		registration = new Button("Зарегистрироваться");
 		registration.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -106,11 +106,11 @@ public class Tester implements EntryPoint {
 		});
 
 		info = new Label(
-				"Р Р°Р·РјРµСЂС‹ Р»РѕРіРёРЅР° Рё РїР°СЂРѕР»СЏ РґРѕР»Р¶РЅС‹ СЃРѕРґРµСЂР¶Р°С‚СЊ РѕС‚3 РґРѕ 20 СЃРёРјРІРѕР»РѕРІ Рё СЃРѕРґРµСЂР¶Р°С‚СЊ С‚РѕР»СЊРєРѕ Р»Р°С‚РёРЅСЃРєРёРµ Р±СѓРєРІС‹ Рё С†РёС„СЂС‹");
+				"Размеры логина и пароля должны содержать от3 до 20 символов и содержать только латинские буквы и цифры");
 		error = new Label("");
 		logged = new Label("");
 
-		signOut = new Button("Р’С‹С…РѕРґ");
+		signOut = new Button("Выход");
 		signOut.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -129,7 +129,7 @@ public class Tester implements EntryPoint {
 			}
 		});
 
-		chooseTheme = new Label("\n Р’С‹Р±РµСЂРёС‚Рµ РїСЂРµРґРјРµС‚:\n");
+		chooseTheme = new Label("\n Выберите предмет:\n");
 		themeList.setVisibleItemCount(1);
 		themeList.setWidth("25em");
 		getDatas(0, themeList);
@@ -145,7 +145,7 @@ public class Tester implements EntryPoint {
 		});
 		newTheme = new TextBox();
 		newTheme.setWidth("25em");
-		addNewTheme = new Button("Р”РѕР±Р°РІРёС‚СЊ РїСЂРµРґРјРµС‚");
+		addNewTheme = new Button("Добавить предмет");
 		addNewTheme.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -164,12 +164,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		changeTheme = new Button("РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ");
+		changeTheme = new Button("Переименовать");
 		changeTheme.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -189,12 +189,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		deleteTheme = new Button("РЈРґР°Р»РёС‚СЊ РїСЂРµРґРјРµС‚");
+		deleteTheme = new Button("Удалить предмет");
 		deleteTheme.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -213,13 +213,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
 
-		chooseTest = new Label("\n Р’С‹Р±РµСЂРёС‚Рµ С‚РµРјСѓ С‚РµСЃС‚Р°:\n");
+		chooseTest = new Label("\n Выберите тему теста:\n");
 		testList.setVisibleItemCount(1);
 		testList.setWidth("25em");
 		testList.addClickHandler(new ClickHandler() {
@@ -233,7 +233,7 @@ public class Tester implements EntryPoint {
 		});
 		newTest = new TextBox();
 		newTest.setWidth("25em");
-		addNewTest = new Button("Р”РѕР±Р°РІРёС‚СЊ С‚РµСЃС‚");
+		addNewTest = new Button("Добавить тест");
 		addNewTest.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -253,12 +253,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		changeTest = new Button("РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ");
+		changeTest = new Button("Переименовать");
 		changeTest.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -277,12 +277,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		deleteTest = new Button("РЈРґР°Р»РёС‚СЊ С‚РµСЃС‚");
+		deleteTest = new Button("Удалить тест");
 		deleteTest.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -300,13 +300,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
 
-		chooseQuestion = new Label("\n Р’С‹Р±РµСЂРёС‚Рµ РІРѕРїСЂРѕСЃ:\n");
+		chooseQuestion = new Label("\n Выберите вопрос:\n");
 		questionList.setVisibleItemCount(1);
 		questionList.setWidth("40em");
 		questionList.addClickHandler(new ClickHandler() {
@@ -319,7 +319,7 @@ public class Tester implements EntryPoint {
 		});
 		newQuestion = new TextBox();
 		newQuestion.setWidth("40em");
-		addNewQuestion = new Button("Р”РѕР±Р°РІРёС‚СЊ РІРѕРїСЂРѕСЃ");
+		addNewQuestion = new Button("Добавить вопрос");
 		addNewQuestion.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -338,12 +338,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		changeQuestion = new Button("Р�Р·РјРµРЅРёС‚СЊ РІРѕРїСЂРѕСЃ");
+		changeQuestion = new Button("Изменить вопрос");
 		changeQuestion.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -361,12 +361,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
-		deleteQuestion = new Button("РЈРґР°Р»РёС‚СЊ РІРѕРїСЂРѕСЃ");
+		deleteQuestion = new Button("Удалить вопрос");
 		deleteQuestion.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -383,13 +383,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
 
-		chooseAnswer = new Label("\n Р’С‹Р±РµСЂРёС‚Рµ РІРѕРїСЂРѕСЃ:\n");
+		chooseAnswer = new Label("\n Выберите вопрос:\n");
 		answerList.setVisibleItemCount(1);
 		answerList.setWidth("40em");
 		answerList.addClickHandler(new ClickHandler() {
@@ -403,8 +403,8 @@ public class Tester implements EntryPoint {
 		newAnswer = new TextBox();
 		newAnswer.setWidth("40em");
 		isRight = new CheckBox();
-		isRight.setText("Р’РµСЂРЅС‹Р№ РѕС‚РІРµС‚");
-		addNewAnswer = new Button("Р”РѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚");
+		isRight.setText("Верный ответ");
+		addNewAnswer = new Button("Добавить ответ");
 		addNewAnswer.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -423,13 +423,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 				isRight.setValue(false);
 			}
 		});
-		changeAnswer = new Button("Р�Р·РјРµРЅРёС‚СЊ РѕС‚РІРµС‚");
+		changeAnswer = new Button("Изменить ответ");
 		changeAnswer.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -447,13 +447,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 				isRight.setValue(false);
 			}
 		});
-		deleteAnswer = new Button("РЈРґР°Р»РёС‚СЊ РѕС‚РІРµС‚");
+		deleteAnswer = new Button("Удалить ответ");
 		deleteAnswer.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -469,13 +469,13 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°!");
+						error.setText("Ошибка!");
 					}
 				});
 			}
 		});
 
-		startButton = new Button("РќР°С‡Р°С‚СЊ С‚РµСЃС‚!");
+		startButton = new Button("Начать тест!");
 		startButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -489,7 +489,7 @@ public class Tester implements EntryPoint {
 
 		testBody = new FlexTable();
 
-		endButton = new Button("РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚С‹!");
+		endButton = new Button("Отправить ответы!");
 		endButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -635,8 +635,7 @@ public class Tester implements EntryPoint {
 	}
 
 	private void onFailureLogin() {
-		error.setText(
-				"РћС€РёР±РєР°! РџСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРѕРґР° Р»РѕРіРёРЅР° Рё РїР°СЂРѕР»СЏ!");
+		error.setText("Ошибка! Проверьте правильность ввода логина и пароля!");
 		login = "";
 		passwordBox.setText("");
 		enableLoginForm();
@@ -699,7 +698,7 @@ public class Tester implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				error.setText("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РґР°РЅРЅС‹С…!");
+				error.setText("Ошибка загрузки данных!");
 			}
 		});
 	}
@@ -729,7 +728,7 @@ public class Tester implements EntryPoint {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			error.setText("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РґР°РЅРЅС‹С…!");
+			error.setText("Ошибка загрузки данных!");
 		}
 	}
 
@@ -749,12 +748,12 @@ public class Tester implements EntryPoint {
 
 					@Override
 					public void onSuccess(Void result) {
-						error.setText("РћС‚РїСЂР°РІР»РµРЅРѕ!");
+						error.setText("Отправлено!");
 					}
 
 					@Override
 					public void onFailure(Throwable caught) {
-						error.setText("РћС€РёР±РєР°, РѕС‚РїСЂР°РІСЊС‚Рµ РµС‰Рµ СЂР°Р·!");
+						error.setText("Ошибка, отправьте еще раз!");
 					}
 
 				});
@@ -794,7 +793,7 @@ public class Tester implements EntryPoint {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			error.setText("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё С‚РµСЃС‚Р°!");
+			error.setText("Ошибка загрузки теста!");
 		}
 
 	}
