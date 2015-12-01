@@ -5,8 +5,12 @@ import java.util.List;
 
 import com.epam.tester.shared.DataObject;
 import com.epam.tester.shared.FieldVerifier;
+import com.epam.tester.shared.Result;
+import com.epam.tester.shared.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,6 +20,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -65,6 +70,10 @@ public class Tester implements EntryPoint {
 	private Button deleteAnswer;
 	private CheckBox isRight;
 
+	private Label usersWhoTested;
+	private final ListBox nameList = new ListBox();
+	private Button loadResults;
+
 	private Button startButton;
 	private Button endButton;
 
@@ -106,7 +115,7 @@ public class Tester implements EntryPoint {
 		});
 
 		info = new Label(
-				"Размеры логина и пароля должны содержать от3 до 20 символов и содержать только латинские буквы и цифры");
+				"Размеры логина и пароля должны содержать от 4 до 20 символов и содержать только латинские буквы и цифры");
 		error = new Label("");
 		logged = new Label("");
 
@@ -121,7 +130,6 @@ public class Tester implements EntryPoint {
 				logged.setText("");
 				error.setText("");
 				testBody.clear(true);
-				startButton.setVisible(true);
 
 				RootPanel.get("LoginForm").setVisible(true);
 				login = "";
@@ -133,10 +141,10 @@ public class Tester implements EntryPoint {
 		themeList.setVisibleItemCount(1);
 		themeList.setWidth("25em");
 		getDatas(0, themeList);
-		themeList.addClickHandler(new ClickHandler() {
+		themeList.addChangeHandler(new ChangeHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onChange(ChangeEvent event) {
 				getDatas(Integer.parseInt(themeList.getSelectedValue()), testList);
 				newTheme.setText(themeList.getSelectedItemText());
 				questionList.clear();
@@ -222,13 +230,15 @@ public class Tester implements EntryPoint {
 		chooseTest = new Label("\n Выберите тему теста:\n");
 		testList.setVisibleItemCount(1);
 		testList.setWidth("25em");
-		testList.addClickHandler(new ClickHandler() {
+		testList.addChangeHandler(new ChangeHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onChange(ChangeEvent event) {
 				getDatas(Integer.parseInt(testList.getSelectedValue()), questionList);
 				newTest.setText(testList.getSelectedItemText());
+				fillUsersWhoTested(Integer.parseInt(testList.getSelectedValue()));
 				answerList.clear();
+
 			}
 		});
 		newTest = new TextBox();
@@ -309,10 +319,10 @@ public class Tester implements EntryPoint {
 		chooseQuestion = new Label("\n Выберите вопрос:\n");
 		questionList.setVisibleItemCount(1);
 		questionList.setWidth("40em");
-		questionList.addClickHandler(new ClickHandler() {
+		questionList.addChangeHandler(new ChangeHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onChange(ChangeEvent event) {
 				getDatas(Integer.parseInt(questionList.getSelectedValue()), answerList);
 				newQuestion.setText(questionList.getSelectedItemText());
 			}
@@ -392,10 +402,10 @@ public class Tester implements EntryPoint {
 		chooseAnswer = new Label("\n Выберите вопрос:\n");
 		answerList.setVisibleItemCount(1);
 		answerList.setWidth("40em");
-		answerList.addClickHandler(new ClickHandler() {
+		answerList.addChangeHandler(new ChangeHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onChange(ChangeEvent event) {
 				newAnswer.setText(answerList.getSelectedItemText());
 				isAnswerRight(Integer.parseInt(answerList.getSelectedValue()));
 			}
@@ -480,10 +490,22 @@ public class Tester implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				startButton.setVisible(false);
 				fillTheTable();
 				endButton.setVisible(!isTutor);
 				RootPanel.get("TestForm").setVisible(true);
+			}
+		});
+
+		usersWhoTested = new Label("Пользователи, прошедшие выбранный выше тест:");
+		nameList.setVisibleItemCount(1);
+		nameList.setWidth("40em");
+		loadResults = new Button("Загрузить данные");
+		loadResults.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				fillResults(Integer.parseInt(nameList.getSelectedValue()),
+						Integer.parseInt(testList.getSelectedValue()));
 			}
 		});
 
@@ -548,12 +570,16 @@ public class Tester implements EntryPoint {
 		RootPanel.get("ChooseForm").add(isRight);
 		RootPanel.get("ChooseForm").add(new Label("\n"));
 		RootPanel.get("ChooseForm").add(startButton);
+		RootPanel.get("ChooseForm").add(usersWhoTested);
+		RootPanel.get("ChooseForm").add(nameList);
+		RootPanel.get("ChooseForm").add(loadResults);
 
 		RootPanel.get("TestForm").setVisible(false);
 		RootPanel.get("TestForm").add(testBody);
 		RootPanel.get("TestForm").add(endButton);
 
 	}
+
 
 	private void login(String nickname, String password) {
 		disableLoginForm();
@@ -681,6 +707,10 @@ public class Tester implements EntryPoint {
 		deleteAnswer.setVisible(isTutor);
 		isRight.setVisible(isTutor);
 
+		usersWhoTested.setVisible(isTutor);
+		nameList.setVisible(isTutor);
+		loadResults.setVisible(isTutor);
+
 		RootPanel.get("ChooseForm").setVisible(true);
 	}
 
@@ -723,7 +753,7 @@ public class Tester implements EntryPoint {
 				for (DataObject data : result) {
 					list.addItem(data.getText(), data.getId() + "");
 				}
-			list.setSelectedIndex(0);
+			list.setSelectedIndex(-1);
 		}
 
 		@Override
@@ -741,7 +771,6 @@ public class Tester implements EntryPoint {
 		}
 		error.setText(answers.get(0) + "");
 		Integer[] result = answers.toArray(new Integer[answers.size()]);
-		error.setText("dva");
 
 		testingService.sendResult(login, Integer.parseInt(testList.getSelectedValue()), result,
 				new AsyncCallback<Void>() {
@@ -762,7 +791,7 @@ public class Tester implements EntryPoint {
 
 	private void fillTheTable() {
 		error.setText("");
-		testBody.clear();
+		testBody.clear(true);
 		listOfCheckBox.clear();
 		testingService.getTest(Integer.parseInt(testList.getSelectedValue()), new TestAsyncCallback());
 	}
@@ -774,21 +803,40 @@ public class Tester implements EntryPoint {
 			error.setText("");
 			int testId = Integer.parseInt(testList.getSelectedValue());
 			int questionId = 0;
+			boolean isOneRightAnswer = false;
+			int rowCount = 0;
 			for (DataObject data : result) {
-				int rowCount = testBody.getRowCount();
 				if (data.getPrev() == testId) {
 					testBody.setHTML(rowCount, 0, "<hr noshade size=\"1\">");
 					rowCount++;
 					questionId = data.getId();
+					isOneRightAnswer = (data.getValue() == 1) ? true : false;
 					testBody.setHTML(rowCount, 0, data.getText());
+					rowCount++;
 				}
-				if (data.getPrev() == questionId) {
-					listOfCheckBox.add(new CheckBox(data.getText()));
+				if ((data.getPrev() == questionId) && !isOneRightAnswer) {
+					String text = data.getText();
+					if (isTutor && (0 == data.getValue()))
+						text = "<del> " + text + " </del>";
+					listOfCheckBox.add(new CheckBox());
+					listOfCheckBox.get(listOfCheckBox.size() - 1).setHTML(text);
 					listOfCheckBox.get(listOfCheckBox.size() - 1).setFormValue(data.getId() + "");
 					testBody.setWidget(rowCount, 0, listOfCheckBox.get(listOfCheckBox.size() - 1));
+					rowCount++;
+				}
+				if ((data.getPrev() == questionId) && isOneRightAnswer) {
+					String text = data.getText();
+					if (isTutor && (0 == data.getValue()))
+						text = "<del> " + text + " </del>";
+					listOfCheckBox.add(new RadioButton(questionId + ""));
+					listOfCheckBox.get(listOfCheckBox.size() - 1).setHTML(text);
+					listOfCheckBox.get(listOfCheckBox.size() - 1).setFormValue(data.getId() + "");
+					testBody.setWidget(rowCount, 0, listOfCheckBox.get(listOfCheckBox.size() - 1));
+					rowCount++;
 				}
 			}
-			testBody.setHTML(testBody.getRowCount(), 0, "<hr noshade size=\"1\">");
+			testBody.setHTML(rowCount, 0, "<hr noshade size=\"1\">");
+
 		}
 
 		@Override
@@ -798,4 +846,45 @@ public class Tester implements EntryPoint {
 
 	}
 
+	private void fillUsersWhoTested(int testId) {
+		nameList.clear();
+		testingService.getTestedUsers(testId, new AsyncCallback<List<User>>() {
+
+			@Override
+			public void onSuccess(List<User> result) {
+				error.setText("");
+				for (User user : result) {
+					nameList.addItem(user.getLogin(), user.getId() + "");
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				error.setText("Ошибка загрузки результатов!");
+			}
+		});
+	}
+
+	private void fillResults(int userId, int testId) {
+		testingService.getResults(userId, testId, new AsyncCallback<List<Result>>() {
+
+			@Override
+			public void onSuccess(List<Result> result) {
+				error.setText("");
+				for (Result res : result) {
+					int answerId = res.getAnswerId();
+					for (CheckBox checkBox : listOfCheckBox) {
+						if (answerId == Integer.parseInt(checkBox.getFormValue())) {
+							checkBox.setValue(true);
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				error.setText("Ошибка загрузки результатов!");
+			}
+		});
+	}
 }

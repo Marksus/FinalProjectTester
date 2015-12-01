@@ -2,6 +2,7 @@ package com.epam.tester.shared;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class DataObject implements Serializable {
 
 	private int id;

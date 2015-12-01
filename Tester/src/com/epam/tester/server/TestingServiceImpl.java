@@ -5,6 +5,8 @@ import java.util.List;
 import com.epam.tester.client.TestingService;
 import com.epam.tester.shared.DataObject;
 import com.epam.tester.shared.FieldVerifier;
+import com.epam.tester.shared.Result;
+import com.epam.tester.shared.User;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -62,5 +64,15 @@ public class TestingServiceImpl extends RemoteServiceServlet implements TestingS
 	@Override
 	public void sendResult(String name, int testId, Integer[] result) {
 		dm.sendResult(name, testId, result);
+	}
+
+	@Override
+	public List<User> getTestedUsers(int testId) {
+		return dm.getTestedUsers(testId);
+	}
+
+	@Override
+	public List<Result> getResults(int userId, int testId) {
+		return dm.getResults(userId, testId);
 	}
 }

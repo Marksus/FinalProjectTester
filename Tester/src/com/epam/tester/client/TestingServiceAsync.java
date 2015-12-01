@@ -3,6 +3,8 @@ package com.epam.tester.client;
 import java.util.List;
 
 import com.epam.tester.shared.DataObject;
+import com.epam.tester.shared.Result;
+import com.epam.tester.shared.User;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -26,4 +28,8 @@ public interface TestingServiceAsync {
 	void getTest(int id, AsyncCallback<List<DataObject>> asyncCallback);
 
 	void sendResult(String name, int testId, Integer[] result, AsyncCallback<Void> asyncCallback);
+
+	void getTestedUsers(int testId, AsyncCallback<List<User>> asycnCallback);
+
+	void getResults(int userId, int testId, AsyncCallback<List<Result>> callback);
 }
