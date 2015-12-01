@@ -1,6 +1,7 @@
 package com.epam.tester.server;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.epam.tester.shared.DataObject;
+import com.epam.tester.shared.Result;
+import com.epam.tester.shared.User;
 
 public class DataManipulator {
 
@@ -27,15 +30,17 @@ public class DataManipulator {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// DataManipulator dm = new DataManipulator();
-	// System.out.println(dm.getThemes().getClass());
-	// }
+	public static void main(String[] args) {
+		DataManipulator dm = new DataManipulator();
+		for (Result res : dm.getResults(2, 3)) {
+			System.out.println(res.getUserId() + " " + res.getTestId() + " " + res.getAnswerId());
+		}
+	}
 
-	public byte login(String nickname, String password) {
+	public byte login(String login, String password) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			UserMapper mapper = session.getMapper(UserMapper.class);
-			User user = mapper.getUser(nickname);
+			User user = mapper.getUser(login);
 			if (user == null)
 				return 0;
 			if (!user.getPassword().equals(password))
@@ -78,7 +83,18 @@ public class DataManipulator {
 	public void insertDataObject(DataObject dataObject) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			DataObjectMapper mapper = session.getMapper(DataObjectMapper.class);
+			int idPrev = dataObject.getPrev();
+			DataObject prev = mapper.getDataObject(idPrev);
 			mapper.insertData(dataObject);
+			int count = 0;
+			for (DataObject data : mapper.getListOfData(idPrev)) {
+				if (data.getValue() > 0)
+					count++;
+			}
+			if ((prev != null) && (prev.getValue() != count)) {
+				prev.setValue(count);
+				mapper.updateData(prev);
+			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -147,4 +163,36 @@ public class DataManipulator {
 		}
 	}
 
+	public List<User> getTestedUsers(int testId) {
+		List<User> list = new LinkedList<>();
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			ResultMapper resultMapper = session.getMapper(ResultMapper.class);
+			UserMapper userMapper = session.getMapper(UserMapper.class);
+			List<Integer> userList = resultMapper.selectUsers(testId);
+			if (userList != null)
+				for (Integer id : userList) {
+					list.add(userMapper.getUserId(id));
+				}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public List<Result> getResults(int userId, int testId) {
+		List<Result> list = new LinkedList<>();
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			ResultMapper resultMapper = session.getMapper(ResultMapper.class);
+			list = resultMapper.getResults(userId);
+			Iterator<Result> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Result res = iterator.next();
+				if (res.getTestId() != testId)
+					iterator.remove();
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

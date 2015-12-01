@@ -1,6 +1,13 @@
-package com.epam.tester.server;
+package com.epam.tester.shared;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int userId;
 	private int testId;
 	private int answerId;

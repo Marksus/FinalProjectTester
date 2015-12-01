@@ -1,14 +1,21 @@
-package com.epam.tester.server;
+package com.epam.tester.shared;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String nickname;
+	private String login;
 	private String password;
 	private boolean isTutor;
 
-	public User(String nickname, String password, boolean isTutor) {
-		this.nickname = nickname;
+	public User(String login, String password, boolean isTutor) {
+		this.login = login;
 		this.password = password;
 		this.isTutor = isTutor;
 	}
@@ -16,12 +23,12 @@ public class User {
 	public User() {
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {

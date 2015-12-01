@@ -3,6 +3,8 @@ package com.epam.tester.client;
 import java.util.List;
 
 import com.epam.tester.shared.DataObject;
+import com.epam.tester.shared.Result;
+import com.epam.tester.shared.User;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -28,4 +30,8 @@ public interface TestingService extends RemoteService {
 	List<DataObject> getTest(int id);
 
 	void sendResult(String name, int testId, Integer[] result);
+
+	List<User> getTestedUsers(int testId);
+
+	List<Result> getResults(int userId, int testId);
 }
